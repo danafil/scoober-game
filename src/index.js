@@ -1,10 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { io } from 'socket.io-client';
 import './index.css';
 import App from './App';
-import store from './app/store';
+import { configStore } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
+
+// TODO mention in README.md that in prod needs to e env specific
+// TODO check why ws:// is not working
+const url = 'http://localhost:5000';
+const socket = io(url);
+const store = configStore(socket);
 
 ReactDOM.render(
   <React.StrictMode>
