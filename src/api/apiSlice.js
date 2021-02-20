@@ -12,7 +12,7 @@ export const apiSlice = createSlice({
 
 export const { connected } = apiSlice.actions;
 
-export const onApiConnect = () => (socket, dispatch) => {
+export const subscribeApiConnect = () => (socket, dispatch) => {
   socket.on('connect', () => dispatch(connected()));
 }
 

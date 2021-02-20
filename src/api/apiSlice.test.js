@@ -1,6 +1,6 @@
 import { configStore } from '../app/store';
 import socketMock from '../testUtils/socketMock'; 
-import api, { onApiConnect } from './apiSlice';
+import api, { subscribeApiConnect } from './apiSlice';
 
 
 describe('async api actions', () => {
@@ -8,10 +8,10 @@ describe('async api actions', () => {
     expect(api(undefined, {})).toEqual({isConnected: false})
   });
 
-  it('it dispatches connected action onApiConnect', () => {
+  it('it dispatches connected action subscribeApiConnect', () => {
     const store = configStore(socketMock);
 
-    store.dispatch(onApiConnect());
+    store.dispatch(subscribeApiConnect());
 
     const { api } = store.getState();
     expect(api).toEqual({isConnected: true});
