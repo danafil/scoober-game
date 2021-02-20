@@ -1,17 +1,25 @@
-import React from 'react';
-import styles from './Game.module.css';
-import { useDispatch } from 'react-redux';
-import { startGame } from './gameSlice';
-import { WideButton } from '../buttons/WideButton';
+import { PropTypes } from 'prop-types';
+import Button from '../../components/Button';
 
-export function Game(props) {
-  const dispatch = useDispatch();
+const Game = ({
+  value,
+  handleTurn,
+}) => {
   return (
-    <div className={styles.game}>
-      <WideButton 
-        startGame={() => dispatch(startGame())}
-        text="New Game"
-      />
-    </div>
-  );
+    <>
+      <div>{value}</div>
+      <div>
+        <Button appearence="round" text="-1" onClick={() => handleTurn(-1)}/>
+        <Button appearence="round" text="0" onClick={() => handleTurn(0)}/>
+        <Button appearence="round" text="1" onClick={() => handleTurn(1)}/>
+      </div>
+    </>
+  )
 }
+
+Game.propTypes = {
+  value: PropTypes.number.isRequired,
+  handleTurn: PropTypes.func.isRequired,
+}
+
+export default Game;
