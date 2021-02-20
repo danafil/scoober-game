@@ -27,9 +27,9 @@ export const initGameStart = (attempt) => (socket) => {
   socket.emit('newgame', attempt);
 }
 
-export const sendTurn = (turn) => (socket, dispatch) => {
+export const sendAttempt = (attempt) => (socket) => {
   //TODO prevent user to click multiple times
-  socket.emit('turn', turn);
+  socket.emit('turn', attempt);
 }
 
 export default gameSlice.reducer;

@@ -5,7 +5,7 @@ import Game from './Game';
 describe('Game', () => {
   const getDefaultProps = () => ({
     value: 42,
-    handleTurn: jest.fn(),
+    handleAttempt: jest.fn(),
   });
 
   it('renders the number', () => {
@@ -27,7 +27,7 @@ describe('Game', () => {
     expect(buttons[2]).toHaveTextContent('1');
   });
 
-  it('calls handleTurn', () => {
+  it('calls handleAttempt', () => {
     const props = getDefaultProps();
 
     render(<Game { ...props }/>);
@@ -35,8 +35,8 @@ describe('Game', () => {
     fireEvent.click(screen.getByText('0'));
     fireEvent.click(screen.getByText('1'));
 
-    expect(props.handleTurn.mock.calls[0][0]).toBe(-1);
-    expect(props.handleTurn.mock.calls[1][0]).toBe(0);
-    expect(props.handleTurn.mock.calls[2][0]).toBe(1);
+    expect(props.handleAttempt.mock.calls[0][0]).toBe(-1);
+    expect(props.handleAttempt.mock.calls[1][0]).toBe(0);
+    expect(props.handleAttempt.mock.calls[2][0]).toBe(1);
   });
 });

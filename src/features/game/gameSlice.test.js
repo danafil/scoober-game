@@ -4,7 +4,7 @@ import game, {
   startGame,
   subscribeGameStart,
   initGameStart,
-  sendTurn,
+  sendAttempt,
 } from './gameSlice';
 
 
@@ -53,11 +53,11 @@ describe('gameSlice', () => {
     expect(socketMock.emit).toHaveBeenCalledWith('newgame', mockedUser)
   });
 
-  it('it calls socket.emit on sendTurn', () => {
+  it('it calls socket.emit on sendAttempt', () => {
     const store = configStore(socketMock);
     const mockedTurn = '001';
 
-    store.dispatch(sendTurn(mockedTurn));
+    store.dispatch(sendAttempt(mockedTurn));
 
     expect(socketMock.emit).toHaveBeenCalledWith('turn', mockedTurn);
   });
