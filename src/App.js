@@ -33,8 +33,8 @@ const App = () => {
   }, [dispatch]);
 
   // TODO handle mutliplayer game
-  const handleInitGame = () =>
-    dispatch(initGameStart({ user: playerOne, isSingleUser: true }));
+  const handleInitGame = (isSingleUser) =>
+    dispatch(initGameStart({ user: playerOne, isSingleUser }));
   const handleAttempt = (number) => {
 		dispatch(
       sendAttempt({
@@ -50,7 +50,10 @@ const App = () => {
   return (
     <div className="App">
       {!isStarted && (
-        <GameInit initGame={handleInitGame} isConnected={isConnected} />
+        <GameInit 
+					initGame={handleInitGame}
+					isConnected={isConnected}
+				/>
       )}
       {gameInProgress && <Game handleAttempt={handleAttempt} value={value} attempts={attempts} />}
       {!!winner && (

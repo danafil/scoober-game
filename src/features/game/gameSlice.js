@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const generateId = () => `${Date.now()}`;
+export const selfId = generateId();
 export const gameSlice = createSlice({
   name: 'game',
   initialState: {
     isStarted: false,
     playerOne: {
-      id: '001',
-      name: 'John',
+      id: selfId,
+      name: selfId,
     }
   },
   reducers: {
@@ -23,7 +25,6 @@ export const subscribeGameStart = () => (socket, dispatch) => {
 }
 
 export const initGameStart = (attempt) => (socket) => {
-	console.log(attempt);
   socket.emit('newgame', attempt);
 }
 

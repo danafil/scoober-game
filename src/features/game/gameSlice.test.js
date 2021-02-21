@@ -5,6 +5,7 @@ import game, {
   subscribeGameStart,
   initGameStart,
   sendAttempt,
+	selfId,
 } from './gameSlice';
 
 
@@ -13,8 +14,8 @@ describe('gameSlice', () => {
     const initState = {
       isStarted: false,
       playerOne: {
-        id: '001',
-        name: 'John',
+        id: selfId,
+        name: selfId,
       }
     }
 

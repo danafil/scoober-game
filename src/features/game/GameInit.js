@@ -8,9 +8,15 @@ const GameInit = ({ initGame, isConnected }) => {
       { !isConnected && <p>Connecting...</p> }
       <Button
         appearence="wide" 
-        onClick={initGame}
+        onClick={() => initGame(true)}
         disable={!isConnected}
-        text="New Game"
+        text="New Single Game"
+      />
+      <Button
+        appearence="wide" 
+        onClick={() => initGame(false)}
+        disable={!isConnected}
+        text="New Multiplayer Game"
       />
     </>
   )

@@ -8,13 +8,14 @@ describe('GameInit', () => {
     isConnected: true,
   });
 
-  it('renders button', () => {
+  it('renders buttons', () => {
     const props = getDefaultProps();
 
     render(<GameInit { ...props } />);
 
-    const button = screen.getByRole('button');
-    expect(button).toHaveTextContent('New Game');
+    const buttons = screen.getAllByRole('button');
+    expect(buttons[0]).toHaveTextContent('New Single Game');
+    expect(buttons[1]).toHaveTextContent('New Multiplayer Game');
   });
 
   it('renders message if not isConnected', () => {
@@ -43,8 +44,11 @@ describe('GameInit', () => {
     const props = getDefaultProps();
 
     render(<GameInit { ...props } />);
-    fireEvent.click(screen.getByText('New Game'));
+    fireEvent.click(screen.getByText('New Single Game'));
+    fireEvent.click(screen.getByText('New Multiplayer Game'));
 
-    expect(props.initGame).toHaveBeenCalledTimes(1);
+    expect(props.initGame).toHaveBeenCalledTimes(2);
+    expect(props.initGame.mock.calls[0][0]).toBe(true);
+    expect(props.initGame.mock.calls[1][0]).toBe(false);
   });
 });
