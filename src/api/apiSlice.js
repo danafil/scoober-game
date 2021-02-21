@@ -6,17 +6,24 @@ export const apiSlice = createSlice({
     isConnected: false,
   },
   reducers: {
-    connected: state => ({ ...state, isConnected: true }),
+    connected: (state) => ({ ...state, isConnected: true }),
   },
 });
 
+//======================== ACTIONS ========================//
+
 export const { connected } = apiSlice.actions;
+
+//===================== ASYNC ACTIONS =====================//
 
 export const subscribeApiConnect = () => (socket, dispatch) => {
   socket.on('connect', () => dispatch(connected()));
-}
+};
 
-export const selectApi = state => state.api;
+//======================== SELECTOR =======================//
+
+export const selectApi = (state) => state.api;
+
+//======================== REDUCER ========================//
 
 export default apiSlice.reducer;
-

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import GameInit from './GameInit';
- 
+
 describe('GameInit', () => {
   const getDefaultProps = () => ({
     initGame: jest.fn(),
@@ -11,7 +11,7 @@ describe('GameInit', () => {
   it('renders buttons', () => {
     const props = getDefaultProps();
 
-    render(<GameInit { ...props } />);
+    render(<GameInit {...props} />);
 
     const buttons = screen.getAllByRole('button');
     expect(buttons[0]).toHaveTextContent('New Single Game');
@@ -24,7 +24,7 @@ describe('GameInit', () => {
       isConnected: false,
     };
 
-    render(<GameInit { ...props } />);
+    render(<GameInit {...props} />);
 
     const message = screen.getByText('Connecting...');
     expect(message).toHaveTextContent('Connecting...');
@@ -35,15 +35,15 @@ describe('GameInit', () => {
       ...getDefaultProps(),
     };
 
-    render(<GameInit { ...props } />);
+    render(<GameInit {...props} />);
 
-    expect(screen.queryByText(/Connecting/i)).toBeNull()
+    expect(screen.queryByText(/Connecting/i)).toBeNull();
   });
 
   it('calls initGame', () => {
     const props = getDefaultProps();
 
-    render(<GameInit { ...props } />);
+    render(<GameInit {...props} />);
     fireEvent.click(screen.getByText('New Single Game'));
     fireEvent.click(screen.getByText('New Multiplayer Game'));
 

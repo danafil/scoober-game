@@ -1,6 +1,6 @@
 const socketMock = {
   on: (event, cb) => cb(),
-  emit: jest.fn()
+  emit: jest.fn(),
 };
 
 export default socketMock;

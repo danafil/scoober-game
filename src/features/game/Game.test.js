@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import Game from './Game';
- 
+
 describe('Game', () => {
   const getDefaultProps = () => ({
     value: 42,
@@ -9,9 +9,9 @@ describe('Game', () => {
   });
 
   it('renders the number', () => {
-    const props = { ...getDefaultProps() }
+    const props = { ...getDefaultProps() };
 
-    render(<Game { ...props }/>);
+    render(<Game {...props} />);
 
     expect(screen.getByText(`${props.value}`)).toBeInTheDocument();
   });
@@ -19,7 +19,7 @@ describe('Game', () => {
   it('renders buttons', () => {
     const props = getDefaultProps();
 
-    render(<Game { ...props }/>);
+    render(<Game {...props} />);
     const buttons = screen.getAllByRole('button');
 
     expect(buttons[0]).toHaveTextContent('-1');
@@ -30,7 +30,7 @@ describe('Game', () => {
   it('calls handleAttempt', () => {
     const props = getDefaultProps();
 
-    render(<Game { ...props }/>);
+    render(<Game {...props} />);
     fireEvent.click(screen.getByText('-1'));
     fireEvent.click(screen.getByText('0'));
     fireEvent.click(screen.getByText('1'));

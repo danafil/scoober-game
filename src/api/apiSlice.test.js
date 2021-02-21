@@ -1,11 +1,10 @@
 import { configStore } from '../app/store';
-import socketMock from '../testUtils/socketMock'; 
-import api, { subscribeApiConnect } from './apiSlice';
-
+import socketMock from '../testUtils/socketMock';
+import api, { subscribeApiConnect, selectApi } from './apiSlice';
 
 describe('async api actions', () => {
   it('should handle initial state', () => {
-    expect(api(undefined, {})).toEqual({isConnected: false})
+    expect(api(undefined, {})).toEqual({ isConnected: false });
   });
 
   it('it dispatches connected action subscribeApiConnect', () => {
@@ -14,6 +13,19 @@ describe('async api actions', () => {
     store.dispatch(subscribeApiConnect());
 
     const { api } = store.getState();
-    expect(api).toEqual({isConnected: true});
+    expect(api).toEqual({ isConnected: true });
+  });
+
+  it('it select api from state', () => {
+    const state = {
+      api: {
+        connected: true,
+      },
+      game: {
+        id: '123',
+      },
+    };
+
+    expect(selectApi(state)).toEqual(state.api);
   });
 });
