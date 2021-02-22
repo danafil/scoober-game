@@ -7,7 +7,7 @@ describe('async api actions', () => {
     expect(api(undefined, {})).toEqual({ isConnected: false });
   });
 
-  it('it dispatches connected action subscribeApiConnect', () => {
+  it('dispatches connected action subscribeApiConnect', () => {
     const store = configStore(socketMock);
 
     store.dispatch(subscribeApiConnect());
@@ -16,7 +16,7 @@ describe('async api actions', () => {
     expect(api).toEqual({ isConnected: true });
   });
 
-  it('it select api from state', () => {
+  it('select api from state', () => {
     const state = {
       api: {
         connected: true,

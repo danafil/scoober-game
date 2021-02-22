@@ -1,0 +1,17 @@
+.gameInit {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	height: 100%;
+}
+
+.gameInitButtons {
+	height: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	padding: 0 25px;
+	flex: 1 0 auto;
+	padding-bottom: 10vh;
+}

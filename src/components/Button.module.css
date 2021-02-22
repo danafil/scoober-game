@@ -1,7 +1,26 @@
 .wide {
-  width: 300px;
+  margin: 5px;
+	padding: 15px 20px;
+	min-width: 230px;
+	max-width: 300px;
+	background-color: #fff;
+	color: #4189bb;
+	border-radius: 40px;
+	border-style: none;
+	box-shadow: 1px 2px 5px rgb(0 0 0 / 42%);
+	font-weight: bold;
+	font-size: 18px;
 }
 
 .round {
-  width: 100px;
+  vertical-align: middle;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+	background-color: #50aadd;
+	color: #fff;
+	font-size: 22px;
+	font-weight: bold;
+	margin: 5px 15px;
 }

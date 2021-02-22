@@ -6,6 +6,8 @@ describe('GameInit', () => {
   const getDefaultProps = () => ({
     initGame: jest.fn(),
     isConnected: true,
+		selfId: '007',
+		winner: '006',
   });
 
   it('renders buttons', () => {
@@ -50,5 +52,29 @@ describe('GameInit', () => {
     expect(props.initGame).toHaveBeenCalledTimes(2);
     expect(props.initGame.mock.calls[0][0]).toBe(true);
     expect(props.initGame.mock.calls[1][0]).toBe(false);
+  });
+
+	it('shows the message when you lose or win', () => {
+    const props = {
+			...getDefaultProps(),
+			winner: '007',
+		};
+
+    render(<GameInit {...props} />);
+
+    const summary = screen.queryByTestId('summary-component');
+    expect(summary).toBeInTheDocument();
+  });
+
+	it('shows no message', () => {
+    const props = {
+			...getDefaultProps(),
+			winner: null,
+		};
+
+    render(<GameInit {...props} />);
+
+    const summary = screen.queryByTestId('summary-component');
+    expect(summary).toBeNull();
   });
 });

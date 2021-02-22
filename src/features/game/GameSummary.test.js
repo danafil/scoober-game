@@ -1,21 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import GameSummary from './GameSummary';
 
 describe('GameSummary', () => {
   const getDefaultProps = () => ({
     initGame: jest.fn(),
     player: { id: '001' },
-  });
-
-  it('renders buttons', () => {
-    const props = getDefaultProps();
-
-    render(<GameSummary {...props} />);
-
-    const buttons = screen.getAllByRole('button');
-    expect(buttons[0]).toHaveTextContent('New Single Game');
-    expect(buttons[1]).toHaveTextContent('New Multiplayer Game');
   });
 
   it('renders message if player win', () => {
@@ -37,15 +27,5 @@ describe('GameSummary', () => {
 
     const message = screen.getByText('You lost');
     expect(message).toHaveTextContent('You lost');
-  });
-
-  it('calls initGame', () => {
-    const props = getDefaultProps();
-
-    render(<GameSummary {...props} />);
-    fireEvent.click(screen.getByText('New Single Game'));
-    fireEvent.click(screen.getByText('New Multiplayer Game'));
-
-    expect(props.initGame).toHaveBeenCalledTimes(2);
   });
 });

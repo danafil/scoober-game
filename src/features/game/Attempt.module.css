@@ -1,0 +1,31 @@
+.attempt {
+	display: flex;
+}
+
+.left {
+	flex-direction: row;
+	justify-content: flex-start;
+}
+
+.right {
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+}
+
+.attemptDetails {
+	flex-shrink: 0;
+	flex-grow: 1;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.detailsLeft {
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.detailsRight {
+	justify-content: flex-end;
+	align-items: flex-end;
+}

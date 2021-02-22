@@ -5,7 +5,9 @@ import Attempt from './Attempt';
 describe('Attempt', () => {
   const getDefaultProps = () => ({
     user: {
-      id: '007',
+			id: '007',
+      profileImg: 'img.png',
+      username: 'Ostap',
     },
     number: 42,
     text: '42 / 3',
@@ -17,7 +19,9 @@ describe('Attempt', () => {
 
     render(<Attempt {...props} />);
 
-    expect(screen.getByText(`${props.user.id}`)).toBeInTheDocument();
+    expect(screen.getByAltText(props.user.username).src).toContain(
+      props.user.profileImg
+    );
     expect(screen.getByText(`${props.number}`)).toBeInTheDocument();
     expect(screen.getByText(`${props.text}`)).toBeInTheDocument();
     expect(screen.getByText(`${props.newValue}`)).toBeInTheDocument();

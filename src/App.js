@@ -5,36 +5,35 @@ import {
   subscribeGameStart,
   selectGame,
   selectGameInProgress,
-  selectSelfTurn,
+  selectCanSubmit,
   initGameStart,
   sendAttempt,
 } from './features/game/gameSlice';
 import Game from './features/game/Game';
 import GameInit from './features/game/GameInit';
-import GameSummary from './features/game/GameSummary';
+import Header from './components/Header';
 import './App.css';
 
 const App = () => {
   const dispatch = useDispatch();
-  const { id, selfId, isStarted, value, winner, attempts } = useSelector(
+  const { id, selfId, startingNumber, winner, attempts, selfImg } = useSelector(
     selectGame
   );
   const { isConnected } = useSelector(selectApi);
   const gameInProgress = useSelector(selectGameInProgress);
-  const selfTurn = useSelector(selectSelfTurn);
+  const canSubmit = useSelector(selectCanSubmit);
 
   useEffect(() => {
     dispatch(subscribeApiConnect());
     dispatch(subscribeGameStart());
   }, [dispatch]);
 
-  // TODO handle mutliplayer game
   const handleInitGame = (isSingleUser) =>
     dispatch(initGameStart({ user: { id: selfId }, isSingleUser }));
 
   //TODO how do we test this?
   const handleAttempt = (number) => {
-    if (selfTurn) {
+    if (canSubmit) {
       dispatch(
         sendAttempt({
           gameId: id,
@@ -47,26 +46,23 @@ const App = () => {
 
   return (
     <div className="App">
-      {!isStarted && (
-        //TODO Rename to GameOptions
-        <GameInit initGame={handleInitGame} isConnected={isConnected} />
-      )}
+      <Header sticky={gameInProgress} profileImg={selfImg} />
       {gameInProgress && (
         <Game
           handleAttempt={handleAttempt}
-          value={value}
+          startingNumber={startingNumber}
           attempts={attempts}
-          selfTurn={selfTurn}
+          canSubmit={canSubmit}
         />
       )}
-      {!!winner && (
-        <GameSummary
-          selfId={selfId}
-          winner={winner}
-          initGame={handleInitGame}
-          isConnected={isConnected}
-        />
-      )}
+      {!gameInProgress && (
+          <GameInit 
+            initGame={handleInitGame} 
+            isConnected={isConnected}
+            selfId={selfId}
+            winner={winner} 
+          />
+        )}
     </div>
   );
 };

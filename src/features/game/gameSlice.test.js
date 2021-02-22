@@ -8,35 +8,95 @@ import game, {
   selfId,
   selectGame,
   selectGameInProgress,
-  selectSelfTurn,
+  selectCanSubmit,
 } from './gameSlice';
 
 describe('gameSlice', () => {
-  it('should handle initial state', () => {
-    const initState = {
-      isStarted: false,
-      selfId,
-    };
-
-    expect(game(undefined, {})).toEqual(initState);
+  const getInitState = () => ({
+    selfId,
+    selfImg: 'player.png',
+    opponentImg: 'opponent.png',
+    isStarted: false,
+    isSubmitting: false,
+    attempts: [],
   });
-
-  describe('Actions, reducer', () => {
-    it('it update state on startGame action dispatch', () => {
-      const store = configStore(socketMock);
-      const gameMock = {
-        id: '111',
-        selfId,
-      };
-
-      store.dispatch(startGame(gameMock));
-
-      const { game } = store.getState();
-      expect(game).toEqual({ ...gameMock, isStarted: true });
+  describe('Reducer and Actions', () => {
+    it('should handle initial state', () => {
+      expect(game(undefined, {})).toEqual(getInitState());
     });
 
-    it('it updates state on subscribeGameStart', () => {
-      socketMock.on = jest.fn((_, cb) => cb());
+    it('sets isStarted true on startGame', () => {
+      const state = {
+				...getInitState(),
+				isStarted: false,
+			};
+			const action = {
+				type: startGame.type,
+				payload: {
+					attempts: [],
+				},
+			};
+
+      const nextState = game(state, action);
+
+      expect(nextState.isStarted).toBe(true);
+    });
+
+    it('sets isSubmitting to false on startGame action dispatch', () => {
+      const state = { ...getInitState(), isSubmitting: true };
+			const action = {
+				type: startGame.type,
+				payload: {
+					attempts: [],
+				},
+			};
+
+      const nextState = game(state, action);
+
+      expect(nextState.isSubmitting).toBe(false);
+    });
+
+    it('sets player profile image on startGame action dispatch', () => {
+      const state = {
+        ...getInitState(),
+        selfId: '007',
+        selfImg: 'myimg.jpg',
+        attempts: [],
+      };
+      const action = {
+        type: startGame.type,
+        payload: {
+          attempts: [{ user: { id: '007' } }],
+        },
+      };
+
+      const nexState = game(state, action);
+      const attempt = nexState.attempts[0];
+      expect(attempt.user.profileImg).toBe(state.selfImg);
+    });
+
+    it('sets opponent profile image on startGame action dispatch', () => {
+      const state = {
+        ...getInitState(),
+        selfId: '007',
+        opponentImg: 'myimg.jpg',
+        attempts: [],
+      };
+      const action = {
+        type: startGame.type,
+        payload: {
+          attempts: [{ user: { id: '888' } }],
+        },
+      };
+
+      const nexState = game(state, action);
+      const attempt = nexState.attempts[0];
+      expect(attempt.user.profileImg).toBe(state.opponentImg);
+    });
+
+    it('updates state on subscribeGameStart', () => {
+      const state = getInitState();
+      socketMock.on = jest.fn((_, cb) => cb(state));
       const store = configStore(socketMock);
 
       store.dispatch(subscribeGameStart());
@@ -46,7 +106,7 @@ describe('gameSlice', () => {
       expect(socketMock.on.mock.calls[0][0]).toEqual('game');
     });
 
-    it('it calls socket.emit on initGameStart', () => {
+    it('calls socket.emit on initGameStart', () => {
       const store = configStore(socketMock);
       const mockedUser = { id: '001' };
 
@@ -55,7 +115,7 @@ describe('gameSlice', () => {
       expect(socketMock.emit).toHaveBeenCalledWith('newgame', mockedUser);
     });
 
-    it('it calls socket.emit on sendAttempt', () => {
+    it('calls socket.emit on sendAttempt', () => {
       const store = configStore(socketMock);
       const mockedTurn = '001';
 
@@ -66,14 +126,15 @@ describe('gameSlice', () => {
   });
 
   describe('Selectors', () => {
-    it('it selects game', () => {
-      const store = configStore(socketMock);
+    it('selects game', () => {
+      const state = {
+				game: {id: 1},
+			};
 
-      const state = store.getState();
       expect(state.game).toEqual(selectGame(state));
     });
 
-    it('it selects gameInProgress to be true if game started and no winner', () => {
+    it('selects gameInProgress to be true if game started and no winner', () => {
       const state = {
         game: {
           isStarted: true,
@@ -84,7 +145,7 @@ describe('gameSlice', () => {
       expect(selectGameInProgress(state)).toBe(true);
     });
 
-    it('it selects gameInProgress to be false if game not started and no winner', () => {
+    it('selects gameInProgress to be false if game not started and no winner', () => {
       const state = {
         game: {
           isStarted: false,
@@ -95,7 +156,7 @@ describe('gameSlice', () => {
       expect(selectGameInProgress(state)).toBe(false);
     });
 
-    it('it selects gameInProgress to be false if game started and has winner', () => {
+    it('selects gameInProgress to be false if game started and has winner', () => {
       const state = {
         game: {
           isStarted: true,
@@ -106,7 +167,7 @@ describe('gameSlice', () => {
       expect(selectGameInProgress(state)).toBe(false);
     });
 
-    it('it selects gameInProgress to be false if game not started and has winner', () => {
+    it('selects gameInProgress to be false if game not started and has winner', () => {
       const state = {
         game: {
           isStarted: false,
@@ -117,40 +178,59 @@ describe('gameSlice', () => {
       expect(selectGameInProgress(state)).toBe(false);
     });
 
-    it('it selects selectSelfTurn to be true', () => {
+    it('can submit after it has turn and not yet submitted', () => {
+      const game = getInitState();
       const state = {
         game: {
+          ...game,
           isStarted: true,
-          turn: '007',
-          selfId: '007',
+          turn: game.selfId,
+          isSubmitting: false,
         },
       };
 
-      expect(selectSelfTurn(state)).toBe(true);
+      expect(selectCanSubmit(state)).toBe(true);
     });
 
-    it('it selects selectSelfTurn to be false if game not started', () => {
+    it('cannot submit if game is not started', () => {
+      const game = getInitState();
       const state = {
         game: {
+          ...game,
           isStarted: false,
-          turn: '007',
-          selfId: '007',
+          turn: game.selfId,
+          isSubmitting: false,
         },
       };
 
-      expect(selectSelfTurn(state)).toBe(false);
+      expect(selectCanSubmit(state)).toBe(false);
     });
-
-    it('it selects selectSelfTurn to be false if turn !== selfId', () => {
+    it('cannot submit on opponent turn', () => {
+      const game = getInitState();
       const state = {
         game: {
+          ...game,
           isStarted: true,
-          turn: '001',
-          selfId: '007',
+          turn: `${game.selfId}-opponent`,
+          isSubmitting: false,
         },
       };
 
-      expect(selectSelfTurn(state)).toBe(false);
+      expect(selectCanSubmit(state)).toBe(false);
+    });
+
+    it('cannot submit multipe times in a row', () => {
+      const game = getInitState();
+      const state = {
+        game: {
+          ...game,
+          isStarted: true,
+          turn: game.selfId,
+          isSubmitting: true,
+        },
+      };
+
+      expect(selectCanSubmit(state)).toBe(false);
     });
   });
 });

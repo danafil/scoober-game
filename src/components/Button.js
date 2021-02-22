@@ -9,7 +9,7 @@ const Button = ({ appearence, text, onClick }) => (
 );
 
 Button.defaultProps = {
-  appearence: styles.wide,
+  appearence: 'wide',
 };
 
 Button.propTypes = {

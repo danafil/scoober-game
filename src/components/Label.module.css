@@ -1,0 +1,13 @@
+.label {
+  vertical-align: middle;
+  width: 60px;
+  height: 60px;
+	line-height: 58px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+	background-color: #50aadd;
+	color: #fff;
+	font-size: 22px;
+	font-weight: bold;
+	margin: 5px 15px;
+}

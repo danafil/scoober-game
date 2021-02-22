@@ -1,0 +1,26 @@
+.summaryWrapper {
+  height: 70%;
+  align-self: stretch;
+}
+
+.summary {
+  height: 70%;
+  background-repeat:no-repeat;
+  background-position: center center;
+  background-size: contain;
+  background-origin: content-box;
+  padding: 5% 25%;
+}
+
+.lost {
+  background-image: url('../../img/you-lost.png');
+}
+
+.win {
+  background-image: url('../../img/win.png');
+}
+
+.message {
+  color: #fff;
+  font-size: 48px;
+}

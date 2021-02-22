@@ -3,8 +3,11 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Game from './Game';
 
 describe('Game', () => {
+	// workaround for https://github.com/jsdom/jsdom/issues/1695
+	window.HTMLElement.prototype.scrollIntoView = function() {};
+
   const getDefaultProps = () => ({
-    value: 42,
+    startingNumber: 42,
     handleAttempt: jest.fn(),
   });
 
@@ -13,7 +16,7 @@ describe('Game', () => {
 
     render(<Game {...props} />);
 
-    expect(screen.getByText(`${props.value}`)).toBeInTheDocument();
+    expect(screen.getByText(`${props.startingNumber}`)).toBeInTheDocument();
   });
 
   it('renders buttons', () => {
@@ -38,5 +41,21 @@ describe('Game', () => {
     expect(props.handleAttempt.mock.calls[0][0]).toBe(-1);
     expect(props.handleAttempt.mock.calls[1][0]).toBe(0);
     expect(props.handleAttempt.mock.calls[2][0]).toBe(1);
+  });
+
+  it('shows waiting for your turn message', () => {
+    const props = { ...getDefaultProps(), canSubmit: false };
+
+    render(<Game {...props} />);
+
+    expect(screen.getByText('Waiting oponent turn...')).toBeInTheDocument();
+  });
+
+	it('shows your turn message', () => {
+    const props = { ...getDefaultProps(), canSubmit: true };
+
+    render(<Game {...props} />);
+
+    expect(screen.getByText('Your turn!')).toBeInTheDocument();
   });
 });

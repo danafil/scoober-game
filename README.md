@@ -1,6 +1,12 @@
 # Scoober Game
 Fun multiplayer game with numbers.
 
+# TODOS
+* transparent bg on game init
+* handle disconnect and leave events
+* debug ws protocol
+* docker
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts

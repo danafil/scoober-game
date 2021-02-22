@@ -1,14 +1,15 @@
 import React from 'react';
-import GameInit from './GameInit';
+import styles from './GameSummary.module.css';
 
-const GameSummary = ({ initGame, winner, selfId, isConnected }) => {
+const GameSummary = ({ winner, selfId }) => {
   const summary = winner === selfId ? 'You won' : 'You lost';
+  const clazz = winner === selfId ? 'win' : 'lost';
 
   return (
-    <>
-      <p>{summary}</p>
-      <GameInit initGame={initGame} isConnected={isConnected} />
-    </>
+    <div className={styles.summaryWrapper} data-testid="summary-component">
+      <div className={`${styles.summary} ${styles[clazz]}`} />
+      <h1 className={styles.message}>{summary}</h1>
+    </div>
   );
 };
 
