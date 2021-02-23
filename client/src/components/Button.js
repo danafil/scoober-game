@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './Button.module.css';
 
 const Button = ({ appearence, text, onClick }) => (
-  <button className={styles[appearence]} aria-label={text} onClick={onClick}>
+  <button className={`${styles[appearence]} ${styles.button}`} aria-label={text} onClick={onClick}>
     {text}
   </button>
 );
