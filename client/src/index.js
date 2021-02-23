@@ -7,8 +7,9 @@ import { configStore } from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 
-// TODO mention in README.md that in prod needs to e env specific
-// TODO check why ws:// is not working
+
+// For production use, configure this in the environment
+// and use ws protocol. Ex: ws://prod-domain.com
 const url = 'http://localhost:5000';
 const socket = io(url);
 const store = configStore(socket);

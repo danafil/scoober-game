@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { subscribeApiConnect, selectApi } from './api/apiSlice';
+import {
+  subscribeApiConnect,
+  subscribeApiDisconnect,
+  selectApi,
+} from './api/apiSlice';
 import {
   subscribeGameStart,
   selectGame,
@@ -25,13 +29,13 @@ const App = () => {
 
   useEffect(() => {
     dispatch(subscribeApiConnect());
+    dispatch(subscribeApiDisconnect());
     dispatch(subscribeGameStart());
   }, [dispatch]);
 
   const handleInitGame = (isSingleUser) =>
     dispatch(initGameStart({ user: { id: selfId }, isSingleUser }));
 
-  //TODO how do we test this?
   const handleAttempt = (number) => {
     if (canSubmit) {
       dispatch(
@@ -56,13 +60,13 @@ const App = () => {
         />
       )}
       {!gameInProgress && (
-          <GameInit 
-            initGame={handleInitGame} 
-            isConnected={isConnected}
-            selfId={selfId}
-            winner={winner} 
-          />
-        )}
+        <GameInit
+          initGame={handleInitGame}
+          isConnected={isConnected}
+          selfId={selfId}
+          winner={winner}
+        />
+      )}
     </div>
   );
 };
